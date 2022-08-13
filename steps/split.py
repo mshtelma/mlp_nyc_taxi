@@ -34,12 +34,12 @@ def process_splits(
 
         cleaned["PICKUP_DOW"] = cleaned["PICKUP_DATETIME"].dt.dayofweek
         cleaned["PICKUP_HOUR"] = cleaned["PICKUP_DATETIME"].dt.hour
-        trip_duration = (
-            cleaned["DROPOFF_DATETIME"] - cleaned["PICKUP_DATETIME"]
-        )
+        trip_duration = cleaned["DROPOFF_DATETIME"] - cleaned["PICKUP_DATETIME"]
         cleaned["TRIP_DURATION"] = trip_duration.map(lambda x: x.total_seconds() / 60)
-        
-        cleaned = cleaned.drop(columns=["PICKUP_DATETIME", "DROPOFF_DATETIME", "VENDOR_ID"])
+
+        cleaned = cleaned.drop(
+            columns=["PICKUP_DATETIME", "DROPOFF_DATETIME", "VENDOR_ID"]
+        )
 
         return cleaned
 
