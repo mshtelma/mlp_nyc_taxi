@@ -26,18 +26,20 @@ def process_splits(
         cleaned = df.dropna()
         # Filter out invalid fare amounts and trip distance
         cleaned = cleaned[
-            (cleaned["fare_amount"] > 0)
-            & (cleaned["trip_distance"] < 400)
-            & (cleaned["trip_distance"] > 0)
-            & (cleaned["fare_amount"] < 1000)
+            (cleaned["FARE_AMOUNT"] > 0)
+            & (cleaned["TRIP_DISTANCE"] < 400)
+            & (cleaned["TRIP_DISTANCE"] > 0)
+            & (cleaned["FARE_AMOUNT"] < 1000)
         ]
 
-        cleaned["pickup_dow"] = cleaned["tpep_pickup_datetime"].dt.dayofweek
-        cleaned["pickup_hour"] = cleaned["tpep_pickup_datetime"].dt.hour
+        cleaned["PICKUP_DOW"] = cleaned["PICKUP_DATETIME"].dt.dayofweek
+        cleaned["PICKUP_HOUR"] = cleaned["PICKUP_DATETIME"].dt.hour
         trip_duration = (
-            cleaned["tpep_dropoff_datetime"] - cleaned["tpep_pickup_datetime"]
+            cleaned["DROPOFF_DATETIME"] - cleaned["PICKUP_DATETIME"]
         )
-        cleaned["trip_duration"] = trip_duration.map(lambda x: x.total_seconds() / 60)
+        cleaned["TRIP_DURATION"] = trip_duration.map(lambda x: x.total_seconds() / 60)
+        
+        cleaned = cleaned.drop(columns=["PICKUP_DATETIME", "DROPOFF_DATETIME", "VENDOR_ID"])
 
         return cleaned
 
